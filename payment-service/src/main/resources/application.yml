@@ -1,0 +1,37 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: payment-service
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/paystream}
+    username: ${DB_USER:paystream}
+    password: ${DB_PASSWORD:paystream}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  mvc:
+    problemdetails:
+      enabled: true          # standard errors as application/problem+json
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP:localhost:9092}
+    producer:
+      acks: all              # the outbox relay only marks a row sent after all in-sync replicas have it
+    consumer:
+      auto-offset-reset: earliest
+
+paystream:
+  outbox:
+    poll-ms: 500             # how often the relay looks for unsent rows
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      probes:
+        enabled: true

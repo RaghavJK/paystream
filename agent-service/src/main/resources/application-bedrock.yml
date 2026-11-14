@@ -1,0 +1,19 @@
+# Activate with: SPRING_PROFILES_ACTIVE=bedrock
+# Needs AWS credentials in the environment (or an attached role) and model access enabled in the Bedrock console.
+# Property names follow Spring AI 1.x; if one is ignored, check the Bedrock Converse page of the Spring AI reference.
+spring:
+  ai:
+    model:
+      chat: bedrock-converse
+    bedrock:
+      aws:
+        region: ${AWS_REGION:us-east-1}
+        timeout: 30s
+      converse:
+        chat:
+          options:
+            # Set BEDROCK_MODEL_ID to a model or inference-profile ID enabled in your account.
+            # The model must support tool use.
+            model: ${BEDROCK_MODEL_ID}
+            temperature: 0.1      # low: this is a factual lookup task, not creative writing
+            max-tokens: 600       # caps cost and keeps answers short

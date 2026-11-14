@@ -1,0 +1,36 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: agent-service
+  mvc:
+    problemdetails:
+      enabled: true
+  ai:
+    # Default profile: no model is created, so the service starts with no AWS account.
+    model:
+      chat: none
+      embedding: none
+    chat:
+      client:
+        enabled: false
+
+paystream:
+  payment-service-url: ${PAYMENT_SERVICE_URL:http://localhost:8081}
+  fraud-service-url: ${FRAUD_SERVICE_URL:http://localhost:8082}
+  tools:
+    connect-timeout-ms: 1000
+    read-timeout-ms: 2000
+  agent:
+    memory-max-messages: 20     # sliding window of conversation history sent to the model
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true

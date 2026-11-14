@@ -1,0 +1,6 @@
+apiVersion: v2
+name: payment-service
+description: PayStream payment-service. Copy this chart for fraud-service and agent-service (roadmap step 12).
+type: application
+version: 0.1.0
+appVersion: "0.1.0"

@@ -1,0 +1,38 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: fraud-service
+  data:
+    mongodb:
+      uri: ${MONGO_URI:mongodb://localhost:27017/paystream}
+      auto-index-creation: true   # creates the debtor_time index at start-up; manage indexes explicitly in production
+  mvc:
+    problemdetails:
+      enabled: true
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP:localhost:9092}
+    producer:
+      acks: all
+    consumer:
+      auto-offset-reset: earliest
+
+paystream:
+  fraud:
+    flag-threshold: 50            # total points at or above this are FLAGGED
+    high-amount: 100000
+    round-unit: 10000
+    watchlist-prefixes: [WATCH]
+    velocity-window-seconds: 60
+    velocity-max-payments: 4      # the 5th payment from one debtor inside the window is flagged
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      probes:
+        enabled: true
